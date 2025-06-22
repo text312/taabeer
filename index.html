@@ -1005,8 +1005,8 @@
         return;
       }
       
-      // Show messages in reverse order (newest first)
-      messages.reverse().forEach(msg => {
+      // Show messages in original order (oldest first)
+      messages.forEach(msg => {
         const card = document.createElement('div');
         card.className = 'message-card';
         
