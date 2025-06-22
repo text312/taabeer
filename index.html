@@ -671,6 +671,14 @@
         padding: 0.4rem 0.8rem;
       }
     }
+    /* Hide all scrollbars but allow scrolling */
+    html, body, * {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
   </style>
 </head>
 <body>
@@ -1006,12 +1014,16 @@
     
     // --- Admin Login Modal ---
     function showLoginModal() {
-      document.getElementById('login-modal').classList.add('active');
-      document.getElementById('admin-password').value = '';
-      document.getElementById('login-error').textContent = '';
-      setTimeout(() => document.getElementById('admin-password').focus(), 100);
-    }
-    
+  // If password is in localStorage, don't open the modal
+  if (localStorage.getItem('adminPassword')) {
+    return;
+  }
+  document.getElementById('login-modal').classList.add('active');
+  document.getElementById('admin-password').value = '';
+  document.getElementById('login-error').textContent = '';
+  setTimeout(() => document.getElementById('admin-password').focus(), 100);
+}
+
     function hideLoginModal() {
       document.getElementById('login-modal').classList.remove('active');
     }
@@ -1110,6 +1122,12 @@
       div.textContent = str;
       return div.innerHTML.replace(/\n/g, '<br>');
     }
+
+    function formatDate(isoString) {
+      if (!isoString) return '';
+      const date = new Date(isoString);
+      return date.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+    }
     
     function renderMessages(messages) {
       const list = document.getElementById('msgs-list');
@@ -1121,7 +1139,7 @@
             <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
               ${message.read ? (isArabic ? '✓ تمت القراءة' : '✓ Read') : (isArabic ? 'غير مقروء' : 'Unread')}
             </span>
-            <span>${message.date}</span>
+            <span>${formatDate(message.createdAt)}</span>
           </div>
           <div class="message-content">
             ${escapeHTML(message.content)}
