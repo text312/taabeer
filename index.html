@@ -1146,6 +1146,8 @@
           isArabic ? 'تعذر جلب الرسائل' : 'Failed to fetch messages';
         document.getElementById('msgs-empty').style.display = 'none';
         console.error(err);
+        hideAdminPanel();
+        localStorage.removeItem('adminPassword');
       }
     }
     
