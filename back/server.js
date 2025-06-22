@@ -54,12 +54,12 @@ app.post('/api/login', async (req, res, next) => {
 
 // Get messages (after login)
 app.get('/api/messages', async (req, res, next) => {
-  console.log(`[${new Date().toISOString()}] GET /api/messages`, { headers: req.headers });
   try {
     const { password } = req.headers;
     const match = password === process.env.ADMIN_PASSWORD;
     if (!match) return res.status(403).json({ error: 'Unauthorized' });
     const messages = await Message.find().sort({ createdAt: -1 });
+    console.log("messages",messages)
     res.json(messages);
   } catch (err) {
     next(err);
