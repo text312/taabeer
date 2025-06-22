@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تعبير عن مشاعري</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #ffd3e0, #fff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      justify-content: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 1rem;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      resize: vertical;
+      direction: rtl;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 1rem;
+      background-color: #ff7096;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff4d78;
+    }
+
+    .lang-toggle {
+      margin-bottom: 1rem;
+      cursor: pointer;
+      color: #0077cc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <div class="lang-toggle" onclick="toggleLang()">English</div>
+    <h1 id="title">تعبير عن مشاعرك</h1>
+    <textarea id="message" rows="6" placeholder="اكتبي ما تشعرين به هنا..."></textarea>
+    <button onclick="sendMessage()">إرسال</button>
+  </div>
+
+  <script>
+    let isArabic = true;
+
+    function toggleLang() {
+      isArabic = !isArabic;
+      document.documentElement.lang = isArabic ? 'ar' : 'en';
+      document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+      document.getElementById('title').textContent = isArabic ? 'تعبير عن مشاعرك' : 'Express Your Feelings';
+      document.getElementById('message').placeholder = isArabic ? 'اكتبي ما تشعرين به هنا...' : 'Write how you feel here...';
+      document.querySelector('.lang-toggle').textContent = isArabic ? 'English' : 'العربية';
+      document.querySelector('button').textContent = isArabic ? 'إرسال' : 'Send';
+    }
+
+    function sendMessage() {
+      const message = document.getElementById('message').value;
+      if (!message.trim()) return alert(isArabic ? 'الرسالة فارغة!' : 'Message is empty!');
+      alert(isArabic ? 'تم إرسال الرسالة ❤' : 'Message sent ❤');
+      document.getElementById('message').value = '';
+      // لاحقاً: أرسل الرسالة إلى الخادم/القاعدة
+    }
+  </script>
+</body>
+</html>
