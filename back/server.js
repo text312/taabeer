@@ -31,7 +31,7 @@ app.post('/api/message', async (req, res) => {
 // Login
 app.post('/api/login', async (req, res) => {
   const { password } = req.body;
-  const match = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH);
+  const match = await bcrypt.compare(password, process.env.ADMIN_PASSWORD);
   if (!match) return res.status(403).json({ error: 'Unauthorized' });
   res.json({ success: true });
 });
