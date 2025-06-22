@@ -46,5 +46,16 @@ app.get('/api/messages', async (req, res) => {
   res.json(messages);
 });
 
+// Debug handler
+app.get('/api/debug', (req, res) => {
+  res.json({
+    uptime: process.uptime(),
+    node_env: process.env.NODE_ENV || 'development',
+    mongo_connected: mongoose.connection.readyState === 1,
+    now: new Date().toISOString(),
+    headers: req.headers
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log('Server running on port', PORT));
