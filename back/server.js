@@ -21,7 +21,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Message schema
 const Message = mongoose.model('Message', new mongoose.Schema({
-  content: String,
+  content: { type: String, required: true },
+  mood: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   read: { type: Boolean, default: false }
 }));
@@ -30,9 +31,10 @@ const Message = mongoose.model('Message', new mongoose.Schema({
 app.post('/api/message', async (req, res, next) => {
   console.log(`[${new Date().toISOString()}] POST /api/message`, { body: req.body });
   try {
-    const { content } = req.body;
+    const { content, mood } = req.body;
     if (!content) return res.status(400).json({ error: 'Content required' });
-    const msg = new Message({ content });
+    if (!mood) return res.status(400).json({ error: 'Mood required' });
+    const msg = new Message({ content, mood });
     await msg.save();
     res.json({ success: true });
   } catch (err) {
