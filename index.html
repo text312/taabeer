@@ -1048,6 +1048,7 @@
     function showLoginModal() {
   // If password is in localStorage, don't open the modal
   if (localStorage.getItem('adminPassword')) {
+    showAdminPanel();
     return;
   }
   document.getElementById('login-modal').classList.add('active');
