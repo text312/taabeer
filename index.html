@@ -623,6 +623,7 @@
       font-size: 1.5rem;
     }
     .logout-btn {
+      margin-right: 7.5px;
       background: rgba(255, 112, 150, 0.1);
       color: var(--primary);
       border: none;
@@ -1441,9 +1442,13 @@
     
     function renderMessages(messages) {
       const list = document.getElementById('msgs-list');
+      list.innerHTML = '';
       messages.forEach(message => {
         const card = document.createElement('div');
         card.className = 'message-card';
+        // Get mood icon info
+        let mood = moods.find(m => m.id === message.mood);
+        let moodIcon = mood ? `<i class="fas ${mood.icon} mood-icon" title="${isArabic ? mood.ar : mood.en}"></i>` : '';
         card.innerHTML = `
           <div class="message-header">
             <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
@@ -1452,13 +1457,15 @@
             <span>${formatDate(message.createdAt)}</span>
           </div>
           <div class="message-content">
-            ${escapeHTML(message.content)}
+            ${moodIcon}
+            <span>${escapeHTML(message.content)}</span>
           </div>
           <div class="message-actions">
-            <button class="message-btn read-btn mark-read-btn "style = " display: ${message.read ? 'none' : 'block'}">
-              <i class="fas fa-check-circle"></i>
-              ${isArabic ? 'تم القراءة' : 'Mark Read'}
+            <button class="message-btn mark-read-btn ${message.read ? 'read-btn' : ''}" ${message.read ? 'disabled' : ''}>
+              <i class="fas fa-check-circle"></i> ${message.read ? (isArabic ? 'تم القراءة' : 'Read') : (isArabic ? 'تحديد كمقروء' : 'Mark Read')}
             </button>
+            <button class="message-btn delete-msg-btn delete-btn">
+              <i class="fas fa-trash-alt"></i> ${isArabic ? 'حذف' : 'Delete'}
             <button class="message-btn delete-btn delete-msg-btn">
               <i class="fas fa-trash-alt"></i>
               ${isArabic ? 'حذف' : 'Delete'}
