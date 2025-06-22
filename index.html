@@ -372,21 +372,31 @@
       if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleMode();
     });
     // --- Message Submission ---
-    function sendMessage() {
+    async function sendMessage() {
       const message = document.getElementById('message').value;
       if (!message.trim()) return alert(isArabic ? 'الرسالة فارغة!' : 'Message is empty!');
-      // Loading animation
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
       const oldTxt = btn.textContent;
       btn.innerHTML = oldTxt + '<span class="loading-dots"><span></span><span></span><span></span></span>';
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.innerHTML = oldTxt;
-        alert(isArabic ? 'تم إرسال الرسالة ❤' : 'Message sent ❤');
-        document.getElementById('message').value = '';
-      }, 1100);
-      // TODO: Send message to backend here
+      try {
+        const res = await fetch(API_BASE + '/api/message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: message })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          alert(isArabic ? 'تم إرسال الرسالة ❤' : 'Message sent ❤');
+          document.getElementById('message').value = '';
+        } else {
+          alert((data?.error || (isArabic ? 'حدث خطأ أثناء الإرسال' : 'Failed to send message')));
+        }
+      } catch (e) {
+        alert(isArabic ? 'تعذر الاتصال بالخادم' : 'Failed to connect to server');
+      }
+      btn.disabled = false;
+      btn.innerHTML = oldTxt;
     }
 
     // --- Admin Login Modal Logic ---
