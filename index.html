@@ -308,7 +308,26 @@
       background: rgba(255, 112, 150, 0.2);
       transform: translateY(-3px);
     }
-    .mood-icon {
+    .msg-mood-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff4d78 60%, #7f5af0 100%);
+  color: #fff;
+  font-size: 1.2rem;
+  margin-inline-start: 0.5rem;
+  box-shadow: 0 2px 8px rgba(255,112,150,0.10);
+  border: 2px solid #fff;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+.msg-mood-badge:hover {
+  box-shadow: 0 4px 16px rgba(255,112,150,0.18);
+}
+.mood-icon {
       font-size: 1.8rem;
       color: var(--primary);
     }
@@ -623,7 +642,7 @@
       font-size: 1.5rem;
     }
     .logout-btn {
-      margin-right: 7.5rem;
+      margin-right: 4.5rem;
       background: rgba(255, 112, 150, 0.1);
       color: var(--primary);
       border: none;
@@ -1450,16 +1469,16 @@
         let mood = moods.find(m => m.id === message.mood);
         let moodIcon = mood ? `<i class="fas ${mood.icon} mood-icon" title="${isArabic ? mood.ar : mood.en}"></i>` : '';
         card.innerHTML = `
-          <div class="message-header">
-            <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
-              ${message.read ? (isArabic ? '✓ تمت القراءة' : '✓ Read') : (isArabic ? 'غير مقروء' : 'Unread')}
-            </span>
-            <span>${formatDate(message.createdAt)}</span>
-          </div>
-          <div class="message-content">
-            ${moodIcon}
-            <span>${escapeHTML(message.content)}</span>
-          </div>
+          <div class="message-header" style="display: flex; align-items: center; justify-content: space-between;">
+        <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
+          ${message.read ? (isArabic ? '✓ تمت القراءة' : '✓ Read') : (isArabic ? 'غير مقروء' : 'Unread')}
+        </span>
+        ${moodIcon ? `<span class="msg-mood-badge" title="${isArabic ? mood.ar : mood.en}"><i class="fas ${mood.icon}"></i></span>` : ''}
+        <span>${formatDate(message.createdAt)}</span>
+      </div>
+      <div class="message-content">
+        <span>${escapeHTML(message.content)}</span>
+      </div>
           <div class="message-actions">
             <button class="message-btn mark-read-btn read-btn ${message.read ? 'read-btn' : ''}" ${message.read ? 'disabled' : ''}>
               <i class="fas fa-check-circle"></i> ${message.read ? (isArabic ? 'تم القراءة' : 'Read') : (isArabic ? 'تحديد كمقروء' : 'Mark Read')}
