@@ -1473,7 +1473,7 @@
         <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
           ${message.read ? (isArabic ? '✓ تمت القراءة' : '✓ Read') : (isArabic ? 'غير مقروء' : 'Unread')}
         </span>
-        ${moodIcon ? `<span class="msg-mood-badge" title="${isArabic ? mood.ar : mood.en}"><i class="fas ${mood.icon}"></i></span>` : ''}
+        ${moodIcon ? `<span class="msg-mood-badge" style="border: ${localStorage.getItem('isDark') ? '1px solid #ccc' : '1px solid #fff'};" title="${isArabic ? mood.ar : mood.en}"><i class="fas ${mood.icon}"></i></span>` : ''}
         <span>${formatDate(message.createdAt)}</span>
       </div>
       <div class="message-content">
