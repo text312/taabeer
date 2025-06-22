@@ -290,8 +290,8 @@
 
   <script>
     // --- Language, Mode, Emoji Picker, Animations ---
-    let isArabic = true;
-    let isDark = false;
+    let isArabic = localStorage.getItem('isArabic') === 'false' ? false : true;
+    let isDark = localStorage.getItem('isDark') === 'true';
     let isAdmin = false;
     let adminPassword = '';
     const API_BASE = 'https://taabeer.onrender.com';
@@ -300,6 +300,7 @@
     // --- Language Toggle ---
     function toggleLang() {
       isArabic = !isArabic;
+      localStorage.setItem('isArabic', isArabic);
       document.documentElement.lang = isArabic ? 'ar' : 'en';
       document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
       document.getElementById('title').textContent = isArabic ? 'تعبير عن مشاعرك' : 'Express Your Feelings';
@@ -317,13 +318,18 @@
       // Error/message resets
       document.getElementById('login-error').textContent = '';
       document.getElementById('msgs-error').textContent = '';
+      // Rerender messages to update direction if admin panel is open
+      if (isAdmin && document.getElementById('admin-panel').style.display === 'block') fetchMessages();
     }
     // --- Light/Dark Mode Toggle ---
     function toggleMode() {
       isDark = !isDark;
+      localStorage.setItem('isDark', isDark);
       document.body.classList.toggle('dark', isDark);
       document.querySelector('.mode-toggle').textContent = isDark ? '☀️' : '🌙';
       document.documentElement.style.setProperty('--modal-bg', isDark ? '#232526' : '#fff');
+      // Rerender messages to update card theme if admin panel is open
+      if (isAdmin && document.getElementById('admin-panel').style.display === 'block') fetchMessages();
     }
     // --- Emoji Picker ---
     function renderEmojis() {
@@ -368,8 +374,15 @@
     // --- Responsive Emoji Picker on load ---
     window.addEventListener('DOMContentLoaded', () => {
       renderEmojis();
-      // Respect system dark mode
-      if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleMode();
+      // Restore theme and language from localStorage
+      if (localStorage.getItem('isDark') === 'true') {
+        isDark = false; // force toggle to apply theme
+        toggleMode();
+      }
+      if (localStorage.getItem('isArabic') === 'false') {
+        isArabic = true; // force toggle to apply lang
+        toggleLang();
+      }
     });
     // --- Message Submission ---
     async function sendMessage() {
@@ -482,8 +495,9 @@
       }
       msgs.slice().reverse().forEach(msg => {
         const card = document.createElement('div');
+        card.className = 'msg-card'; // add a class for easier theme switching
         card.style = `background:${isDark ? '#232526' : '#fff8fa'};border-radius:1.2rem;box-shadow:0 2px 10px rgba(255,112,150,0.08);padding:1.1rem 1rem;margin-bottom:1.3rem;text-align:${isArabic?'right':'left'};animation:fadeInUp 0.7s cubic-bezier(.6,.1,.4,1);position:relative;`;
-        card.innerHTML = `<div style="font-size:1.15rem;white-space:pre-line;word-break:break-word;color:${isDark?'#f7f7fa':'#232526'};">${escapeHTML(msg.content)}</div><div style="font-size:0.93rem;color:#ff7096;margin-top:0.7rem;">${formatDate(msg.createdAt)}</div>`;
+        card.innerHTML = `<div style=\"font-size:1.15rem;white-space:pre-line;word-break:break-word;color:${isDark?'#f7f7fa':'#232526'};\">${escapeHTML(msg.content)}</div><div style=\"font-size:0.93rem;color:#ff7096;margin-top:0.7rem;\">${formatDate(msg.createdAt)}</div>`;
         list.appendChild(card);
       });
     }
