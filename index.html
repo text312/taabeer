@@ -1404,7 +1404,7 @@
             ${escapeHTML(message.content)}
           </div>
           <div class="message-actions">
-            <button class="message-btn read-btn mark-read-btn">
+            <button class="message-btn read-btn mark-read-btn "style = " display: ${message.read ? 'none' : 'block'}">
               <i class="fas fa-check-circle"></i>
               ${isArabic ? 'تم القراءة' : 'Mark Read'}
             </button>
