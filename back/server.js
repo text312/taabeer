@@ -22,7 +22,8 @@ mongoose.connect(process.env.MONGO_URI)
 // Message schema
 const Message = mongoose.model('Message', new mongoose.Schema({
   content: String,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  read: { type: Boolean, default: false }
 }));
 
 // Send message
@@ -59,8 +60,37 @@ app.get('/api/messages', async (req, res, next) => {
     const match = password === process.env.ADMIN_PASSWORD;
     if (!match) return res.status(403).json({ error: 'Unauthorized' });
     const messages = await Message.find().sort({ createdAt: -1 });
-    console.log("messages",messages)
     res.json(messages);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Mark message as read
+app.patch('/api/messages/:id/read', async (req, res, next) => {
+  try {
+    const { password } = req.headers;
+    const match = password === process.env.ADMIN_PASSWORD;
+    if (!match) return res.status(403).json({ error: 'Unauthorized' });
+    const { id } = req.params;
+    const msg = await Message.findByIdAndUpdate(id, { read: true }, { new: true });
+    if (!msg) return res.status(404).json({ error: 'Message not found' });
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Delete message
+app.delete('/api/messages/:id', async (req, res, next) => {
+  try {
+    const { password } = req.headers;
+    const match = password === process.env.ADMIN_PASSWORD;
+    if (!match) return res.status(403).json({ error: 'Unauthorized' });
+    const { id } = req.params;
+    const msg = await Message.findByIdAndDelete(id);
+    if (!msg) return res.status(404).json({ error: 'Message not found' });
+    res.json({ success: true });
   } catch (err) {
     next(err);
   }
