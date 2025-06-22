@@ -2,88 +2,139 @@
 <html lang="ar" dir="rtl">
 <!--
   Express My Feelings / تعبير عن مشاعري
-  Beautiful, dual-language, Canva-inspired message input page
-  Features: animated background, emoji picker, light/dark mode, responsive, warm colors, smooth animations
+  Beautiful, dual-language, emotional message sharing platform
+  Enhanced with: gradient animations, 3D effects, micro-interactions, and elegant UI
 -->
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>تعبير عن مشاعري</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
+      --primary: #ff4d78;
+      --primary-light: #ff85a2;
+      --primary-dark: #d93d65;
+      --secondary: #7f5af0;
+      --accent: #25d0ab;
+      --text: #2e2e3a;
+      --text-light: #5a5a6e;
       --bg: #fff8fa;
-      --fg: #232526;
-      --panel-bg: rgba(255,255,255,0.65);
-      --modal-bg: rgba(255,255,255,0.40);
-      --overlay-bg: rgba(0,0,0,0.12);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-shadow: 0 10px 30px rgba(255, 112, 150, 0.12);
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
     }
-    body.dark, .dark {
-      --bg: #232526;
-      --fg: #f7f7fa;
-      --panel-bg: rgba(35,37,38,0.60);
-      --modal-bg: rgba(35,37,38,0.38);
-      --overlay-bg: rgba(0,0,0,0.28);
+    .dark {
+      --primary: #ff85a2;
+      --primary-light: #ffb3c6;
+      --primary-dark: #ff7096;
+      --secondary: #9370ff;
+      --accent: #2ce0b9;
+      --text: #f0f0f5;
+      --text-light: #c2c2d6;
+      --bg: #1a1a24;
+      --card-bg: rgba(30, 30, 40, 0.9);
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
-    body {
-      font-family: 'Cairo', 'Quicksand', sans-serif;
+    
+    /* Base Styles */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: linear-gradient(120deg, #ffd3e0 0%, #fff0f5 100%);
+    }
+    body {
+      font-family: 'Tajawal', 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
-      transition: background 0.6s;
-      background-color: var(--bg);
-      color: var(--fg);
+      transition: var(--transition);
+      line-height: 1.6;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(255, 112, 150, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(127, 90, 240, 0.08) 0%, transparent 50%);
+      animation: gradientRotate 30s linear infinite;
+      z-index: -2;
+    }
+    @keyframes gradientRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     
-    /* Animated floating hearts/petals */
-    .bg-anim {
+    /* Floating Elements Animation */
+    .floating-elements {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: -1;
       overflow: hidden;
     }
-    .petal {
+    .floating-element {
       position: absolute;
-      width: 32px; height: 32px;
-      opacity: 0.7;
-      animation: floatPetal 10s linear infinite;
+      opacity: 0.6;
+      animation: float 15s linear infinite;
       will-change: transform;
       filter: blur(0.5px);
     }
-    @keyframes floatPetal {
-      0% { transform: translateY(0) scale(1); opacity: 0.7; }
-      70% { opacity: 0.9; }
-      100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100vh) rotate(360deg) scale(1.2); opacity: 0; }
     }
-
+    
+    /* Main Container */
     .container {
       position: relative;
-      background: var(--panel-bg);
-      border-radius: 2rem;
-      box-shadow: 0 10px 30px rgba(255, 112, 150, 0.08), 0 2px 4px rgba(0,0,0,0.03);
-      padding: 2rem 1.5rem 1.5rem 1.5rem;
-      max-width: 430px;
-      width: 95vw;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      box-shadow: var(--card-shadow);
+      padding: 2.5rem 2rem;
+      width: 95%;
+      max-width: 480px;
       text-align: center;
-      animation: fadeInUp 1.2s cubic-bezier(.6,.1,.4,1) forwards;
-      z-index: 1;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) both;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
     }
-
-    @media (max-width: 600px) {
-      .container { padding: 1.2rem 0.6rem 1rem 0.6rem; }
-      h1 { font-size: 1.2rem; }
-      textarea { font-size: 0.98rem; }
+    .container::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: rotate(45deg);
+      pointer-events: none;
+      animation: shine 6s infinite;
     }
-
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -94,439 +145,904 @@
         transform: translateY(0);
       }
     }
+    
+    /* Header */
     h1 {
-      font-size: 2.1rem;
-      color: #ff4d78;
-      margin-bottom: 1.2rem;
-      font-family: 'Cairo', 'Quicksand', sans-serif;
-      letter-spacing: 0.5px;
-      transition: color 0.4s;
-    }
-    textarea {
-      width: 100%;
-      padding: 1.1rem;
-      border-radius: 1.2rem;
-      border: 1.5px solid #ffd3e0;
-      font-size: 1.1rem;
-      resize: vertical;
-      direction: inherit;
-      background: #fff8fa;
-      color: #333;
-      margin-bottom: 0.7rem;
-      outline: none;
-      box-sizing: border-box;
-      transition: border 0.3s, background 0.3s;
-      font-family: 'Cairo', 'Quicksand', sans-serif;
-      min-height: 100px;
-    }
-    textarea:focus {
-      border: 1.5px solid #ff7096;
-      background: #fff0f5;
-    }
-    .emoji-picker {
-      margin-bottom: 0.6rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.3rem;
-      user-select: none;
-    }
-    .emoji-btn {
-      background: none;
-      border: none;
-      font-size: 1.4rem;
-      cursor: pointer;
-      transition: transform 0.2s;
-      border-radius: 0.7rem;
-      padding: 0.1rem 0.4rem;
-    }
-    .emoji-btn:hover, .emoji-btn:focus {
-      background: #ffe6ee;
-      transform: scale(1.18);
-      outline: none;
-    }
-    .lang-toggle, .mode-toggle {
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-      color: #0077cc;
-      font-weight: bold;
-      background: none;
-      border: none;
-      font-size: 1rem;
-      transition: color 0.3s;
-      border-radius: 0.7rem;
-      padding: 0.2rem 0.7rem;
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      position: relative;
       display: inline-block;
     }
-    .lang-toggle:hover, .mode-toggle:hover {
-      color: #ff7096;
-      background: #f0f8ff;
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 3px;
     }
+    
+    /* Toggle Buttons */
     .toggle-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+    .toggle-btn {
+      background: rgba(127, 90, 240, 0.1);
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
       gap: 0.5rem;
     }
-    button.submit-btn {
-      margin-top: 0.7rem;
-      padding: 0.8rem 2.2rem;
-      border: none;
-      border-radius: 1.2rem;
-      background-color: #ff7096;
-      color: white;
-      font-size: 1.15rem;
-      cursor: pointer;
-      box-shadow: 0 2px 10px rgba(255, 112, 150, 0.09);
-      transition: background 0.3s, transform 0.2s;
+    .toggle-btn:hover {
+      background: rgba(127, 90, 240, 0.2);
+      transform: translateY(-2px);
+    }
+    .toggle-btn:active {
+      transform: translateY(0);
+    }
+    
+    /* Textarea */
+    textarea {
+      width: 100%;
+      padding: 1.2rem;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 112, 150, 0.3);
+      font-size: 1.1rem;
+      resize: vertical;
+      min-height: 150px;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      transition: var(--transition);
       font-family: inherit;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    .dark textarea {
+      background: rgba(30, 30, 40, 0.7);
+      border-color: rgba(255, 112, 150, 0.2);
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 112, 150, 0.2);
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .dark textarea:focus {
+      background: rgba(40, 40, 50, 0.9);
+    }
+    
+    /* Emoji Picker */
+    .emoji-picker {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+    .dark .emoji-picker {
+      background: rgba(30, 30, 40, 0.5);
+    }
+    .emoji-btn {
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 0.3rem;
+      border-radius: 10px;
+      line-height: 1;
+    }
+    .emoji-btn:hover {
+      transform: scale(1.3) translateY(-3px);
+      background: rgba(255, 112, 150, 0.2);
+    }
+    
+    /* Submit Button */
+    .submit-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(255, 112, 150, 0.3);
       position: relative;
       overflow: hidden;
+      margin-top: 0.5rem;
+      width: 100%;
+      max-width: 220px;
     }
-    button.submit-btn:active {
-      transform: scale(0.97);
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 112, 150, 0.4);
     }
-    button.submit-btn[disabled] {
-      background: #ffd3e0;
-      color: #aaa;
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: rotate(45deg);
+      pointer-events: none;
+      animation: shine 4s infinite;
+    }
+    .submit-btn[disabled] {
+      background: var(--text-light);
+      box-shadow: none;
       cursor: not-allowed;
+      opacity: 0.7;
     }
+    
+    /* Loading Animation */
     .loading-dots {
-      display: inline-block;
-      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
       margin-left: 0.5rem;
     }
     .loading-dots span {
       display: inline-block;
-      width: 6px; height: 6px;
-      background: #fff;
+      width: 8px;
+      height: 8px;
+      background: currentColor;
       border-radius: 50%;
-      margin: 0 1px;
-      animation: dotPulse 1.2s infinite ease-in-out;
+      animation: bounce 1.4s infinite ease-in-out both;
     }
-    .loading-dots span:nth-child(2) {
-      animation-delay: 0.2s;
+    .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
     }
-    .loading-dots span:nth-child(3) {
-      animation-delay: 0.4s;
+    
+    /* Admin Button */
+    .admin-btn {
+      background: rgba(37, 208, 171, 0.1);
+      color: var(--accent);
+      border: none;
+      border-radius: 50px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    @keyframes dotPulse {
-      0%, 80%, 100% { opacity: 0.3; transform: scale(1); }
-      40% { opacity: 1; transform: scale(1.3); }
+    .admin-btn:hover {
+      background: rgba(37, 208, 171, 0.2);
+      transform: translateY(-2px);
     }
-    /* Light/Dark mode */
-    body.dark {
-      background: linear-gradient(120deg, #232526 0%, #414345 100%);
+    
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
     }
-    body.dark .container {
-      background: rgba(36, 36, 38, 0.97);
-      box-shadow: 0 10px 30px rgba(36,36,38,0.13);
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
     }
-    body.dark h1 { color: #ffb3c6; }
-    body.dark textarea {
-      background: #2e2e32;
-      color: #f7f7fa;
-      border: 1.5px solid #444;
+    .modal {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    body.dark textarea:focus {
-      background: #232526;
-      border: 1.5px solid #ffb3c6;
+    .modal-overlay.active .modal {
+      transform: translateY(0);
     }
-    body.dark .emoji-btn:hover, body.dark .emoji-btn:focus {
-      background: #3a3a45;
-    }
-    body.dark .lang-toggle, body.dark .mode-toggle {
-      color: #ffb3c6;
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
       background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: var(--transition);
     }
-    body.dark .lang-toggle:hover, body.dark .mode-toggle:hover {
-      background: #232526;
-      color: #fff;
+    .modal-close:hover {
+      color: var(--primary);
+      transform: rotate(90deg);
     }
-    body.dark button.submit-btn {
-      background: #ffb3c6;
-      color: #232526;
+    .modal-title {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      text-align: center;
     }
-    body.dark button.submit-btn[disabled] {
-      background: #444;
-      color: #bbb;
+    .modal-input {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 112, 150, 0.3);
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+      font-family: inherit;
     }
-    /* Responsive for small screens */
+    .dark .modal-input {
+      background: rgba(30, 30, 40, 0.7);
+    }
+    .modal-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 112, 150, 0.2);
+    }
+    .modal-error {
+      color: #ff4d4d;
+      margin-top: 0.5rem;
+      min-height: 1.2em;
+      text-align: center;
+    }
+    
+    /* Admin Panel */
+    .admin-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .admin-panel.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .admin-container {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      padding: 2rem;
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .admin-title {
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+    .logout-btn {
+      background: rgba(255, 112, 150, 0.1);
+      color: var(--primary);
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logout-btn:hover {
+      background: rgba(255, 112, 150, 0.2);
+      transform: translateY(-2px);
+    }
+    .messages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .message-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeIn 0.5s ease both;
+      transition: var(--transition);
+    }
+    .dark .message-card {
+      background: rgba(40, 40, 50, 0.5);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message-content {
+      font-size: 1.1rem;
+      white-space: pre-line;
+      word-break: break-word;
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+    .message-date {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-align: right;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+    .loading-state {
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.8rem 1.5rem;
+        border-radius: 20px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      textarea {
+        font-size: 1rem;
+        padding: 1rem;
+      }
+      .submit-btn {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+      }
+      .admin-container {
+        padding: 1.5rem;
+      }
+    }
     @media (max-width: 400px) {
-      .container { padding: 0.6rem 0.1rem 0.7rem 0.1rem; }
-      h1 { font-size: 1rem; }
-      .emoji-btn { font-size: 1.1rem; }
+      .container {
+        padding: 1.5rem 1.2rem;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      .toggle-btn, .admin-btn, .logout-btn {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+      }
     }
-  </style>
   </style>
 </head>
 <body>
-  <!-- Animated floating hearts/petals background -->
-  <div class="bg-anim" id="bg-anim"></div>
+  <!-- Floating Elements Background -->
+  <div class="floating-elements" id="floating-elements"></div>
+  
+  <!-- Main App Container -->
   <div class="container" id="app">
     <div class="toggle-row">
-      <button class="lang-toggle" onclick="toggleLang()">English</button>
-      <button class="mode-toggle" onclick="toggleMode()" title="Light/Dark Mode" aria-label="Light/Dark Mode">🌙</button>
+      <button class="toggle-btn" id="lang-toggle" onclick="toggleLang()">
+        <span id="lang-icon">🌐</span>
+        <span id="lang-text">English</span>
+      </button>
+      <button class="toggle-btn" id="mode-toggle" onclick="toggleMode()">
+        <span id="mode-icon">🌙</span>
+        <span id="mode-text">الوضع المظلم</span>
+      </button>
     </div>
+    
     <h1 id="title">تعبير عن مشاعرك</h1>
+    
     <div class="emoji-picker" id="emoji-picker"></div>
+    
     <textarea id="message" rows="6" placeholder="اكتبي ما تشعرين به هنا..." maxlength="800"></textarea>
-    <button class="submit-btn" id="submit-btn" onclick="sendMessage()">إرسال</button>
-    <div style="margin-top:1.2rem;">
-      <button class="submit-btn" style="background:#0077cc;" onclick="showLoginModal()" id="admin-login-btn">🔐 <span id="admin-btn-txt">دخول المشرف</span></button>
-    </div>
+    
+    <button class="submit-btn" id="submit-btn" onclick="sendMessage()">
+      <span id="submit-text">إرسال</span>
+    </button>
+    
+    <button class="admin-btn" onclick="showLoginModal()">
+      <span id="admin-icon">🔐</span>
+      <span id="admin-text">دخول المشرف</span>
+    </button>
   </div>
-
+  
   <!-- Admin Login Modal -->
-  <div id="login-modal" style="display:none; position:fixed; top:0;left:0;width:100vw;height:100vh;z-index:10;justify-content:center;align-items:center;background:var(--overlay-bg);">
-    <div style="background:var(--modal-bg);border-radius:1.2rem;box-shadow:0 6px 32px rgba(0,0,0,0.12);padding:2rem 1.5rem;max-width:350px;width:90vw;text-align:center;position:relative;">
-      <button onclick="hideLoginModal()" style="position:absolute;top:0.7rem;right:0.9rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#aaa;">✖</button>
-      <h2 id="login-title" style="margin-bottom:1.3rem; color:#ff7096;">دخول المشرف</h2>
-      <input id="admin-password" type="password" style="width:90%;padding:0.7rem 1rem;margin-bottom:1.1rem;border-radius:0.9rem;border:1.2px solid #ffd3e0;font-size:1rem;outline:none;font-family:inherit;background:#fff8fa;direction:ltr;" placeholder="كلمة المرور" />
-      <div>
-        <button class="submit-btn" id="login-btn" onclick="adminLogin()" style="width:100%;">دخول</button>
-      </div>
-      <div id="login-error" style="color:#d33;margin-top:0.7rem;font-size:1rem;min-height:1.2em;"></div>
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="hideLoginModal()">✕</button>
+      <h2 class="modal-title" id="login-title">دخول المشرف</h2>
+      <input type="password" class="modal-input" id="admin-password" placeholder="كلمة المرور">
+      <div class="modal-error" id="login-error"></div>
+      <button class="submit-btn" id="login-btn" onclick="adminLogin()">
+        <span id="login-text">دخول</span>
+      </button>
     </div>
   </div>
-
-  <!-- Admin Messages Viewer -->
-  <div id="admin-panel" style="display:none; position:fixed; top:0;left:0;width:100vw;height:100vh;z-index:11;overflow:auto;background:var(--overlay-bg);">
-    <div style="max-width:540px;margin:2.5rem auto 2rem auto;padding:1.5rem 1rem 2rem 1rem;background:var(--panel-bg);border-radius:2rem;box-shadow:0 8px 32px rgba(255,112,150,0.12);position:relative;">
-      <button onclick="logoutAdmin()" style="position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#ff7096;font-weight:bold;">🚪 <span id="logout-txt">خروج</span></button>
-      <h2 id="msgs-title" style="color:#ff7096;margin-bottom:1.3rem;">الرسائل المستلمة</h2>
-      <div id="msgs-list"></div>
-      <div id="msgs-loading" style="margin-top:2rem;text-align:center;display:none;">
-        <span class="loading-dots"><span></span><span></span><span></span></span>
+  
+  <!-- Admin Panel -->
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-container">
+      <div class="admin-header">
+        <h2 class="admin-title" id="msgs-title">الرسائل المستلمة</h2>
+        <button class="logout-btn" onclick="logoutAdmin()">
+          <span id="logout-icon">🚪</span>
+          <span id="logout-text">خروج</span>
+        </button>
       </div>
-      <div id="msgs-error" style="color:#d33;margin-top:1.1rem;font-size:1rem;"></div>
+      
+      <div class="messages-list" id="msgs-list"></div>
+      
+      <div class="loading-state" id="msgs-loading" style="display: none;">
+        <div class="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      
+      <div class="empty-state" id="msgs-empty" style="display: none;">
+        <span id="no-msgs-text">لا توجد رسائل بعد</span>
+      </div>
+      
+      <div class="modal-error" id="msgs-error"></div>
     </div>
   </div>
 
   <script>
-    // --- Language, Mode, Emoji Picker, Animations ---
-    let isArabic = localStorage.getItem('isArabic') === 'false' ? false : true;
+    // --- Configuration ---
+    let isArabic = localStorage.getItem('isArabic') !== 'false';
     let isDark = localStorage.getItem('isDark') === 'true';
     let isAdmin = false;
     let adminPassword = '';
     const API_BASE = 'https://taabeer.onrender.com';
     const emojis = ['😊','😢','❤️','🥰','😔','🌸','🌹','✨','🙏','😇','😞','😃','😭','😌','💖','😶','🤍','😅','😳','🥺','😡','😱','😴','😎','🤗','😍','😕','💔','💗','🤍','🌷'];
-
+    const shapes = [
+      '<svg width="32" height="32" viewBox="0 0 32 32"><path fill="#ffb3c6" d="M16 29s-13-8.35-13-17A7 7 0 0 1 16 7a7 7 0 0 1 13 5c0 8.65-13 17-13 17Z"/></svg>',
+      '<svg width="32" height="32" viewBox="0 0 32 32"><path d="M16 29C16 29 3 20.65 3 12A7 7 0 0 1 16 5a7 7 0 0 1 13 7c0 8.65-13 17-13 17Z" fill="#ffd3e0"/></svg>',
+      '<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffd3e0"/></svg>',
+      '<svg width="32" height="32" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="10" ry="14" fill="#ff7096"/></svg>'
+    ];
+    
+    // --- Initialize App ---
+    function initApp() {
+      // Set initial theme
+      if (isDark) {
+        document.body.classList.add('dark');
+        document.getElementById('mode-icon').textContent = '☀️';
+        document.getElementById('mode-text').textContent = isArabic ? 'الوضع المضيء' : 'Light Mode';
+      }
+      
+      // Set initial language
+      updateLanguage();
+      
+      // Render emoji picker
+      renderEmojis();
+      
+      // Create floating elements
+      createFloatingElements();
+      
+      // Set up textarea auto-resize
+      setupTextarea();
+    }
+    
+    // --- Floating Elements Background ---
+    function createFloatingElements() {
+      const container = document.getElementById('floating-elements');
+      const count = Math.floor(window.innerWidth / 20);
+      
+      for (let i = 0; i < count; i++) {
+        const element = document.createElement('div');
+        element.className = 'floating-element';
+        
+        // Random properties
+        const size = 20 + Math.random() * 30;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 10 + Math.random() * 20;
+        
+        // Set styles
+        element.style.width = `${size}px`;
+        element.style.height = `${size}px`;
+        element.style.left = `${left}%`;
+        element.style.top = `${100 + Math.random() * 20}%`;
+        element.style.animationDelay = `${delay}s`;
+        element.style.animationDuration = `${duration}s`;
+        element.style.opacity = 0.3 + Math.random() * 0.5;
+        
+        // Random shape
+        element.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
+        
+        container.appendChild(element);
+      }
+    }
+    
+    // --- Textarea Setup ---
+    function setupTextarea() {
+      const textarea = document.getElementById('message');
+      
+      // Auto-resize
+      textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+      });
+      
+      // Focus effect
+      textarea.addEventListener('focus', function() {
+        this.parentElement.querySelector('.submit-btn').style.transform = 'translateY(0)';
+      });
+    }
+    
     // --- Language Toggle ---
     function toggleLang() {
       isArabic = !isArabic;
       localStorage.setItem('isArabic', isArabic);
+      updateLanguage();
+    }
+    
+    function updateLanguage() {
+      // Update HTML attributes
       document.documentElement.lang = isArabic ? 'ar' : 'en';
       document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+      
+      // Update UI texts
       document.getElementById('title').textContent = isArabic ? 'تعبير عن مشاعرك' : 'Express Your Feelings';
       document.getElementById('message').placeholder = isArabic ? 'اكتبي ما تشعرين به هنا...' : 'Write how you feel here...';
-      document.querySelector('.lang-toggle').textContent = isArabic ? 'English' : 'العربية';
-      document.getElementById('submit-btn').textContent = isArabic ? 'إرسال' : 'Send';
-      document.getElementById('admin-btn-txt').textContent = isArabic ? 'دخول المشرف' : 'Admin Login';
+      document.getElementById('lang-text').textContent = isArabic ? 'English' : 'العربية';
+      document.getElementById('submit-text').textContent = isArabic ? 'إرسال' : 'Send';
+      document.getElementById('admin-text').textContent = isArabic ? 'دخول المشرف' : 'Admin Login';
       document.getElementById('login-title').textContent = isArabic ? 'دخول المشرف' : 'Admin Login';
       document.getElementById('admin-password').placeholder = isArabic ? 'كلمة المرور' : 'Password';
-      document.getElementById('login-btn').textContent = isArabic ? 'دخول' : 'Login';
+      document.getElementById('login-text').textContent = isArabic ? 'دخول' : 'Login';
       document.getElementById('msgs-title').textContent = isArabic ? 'الرسائل المستلمة' : 'Received Messages';
-      document.getElementById('logout-txt').textContent = isArabic ? 'خروج' : 'Logout';
-      // Emoji picker direction
+      document.getElementById('logout-text').textContent = isArabic ? 'خروج' : 'Logout';
+      document.getElementById('no-msgs-text').textContent = isArabic ? 'لا توجد رسائل بعد' : 'No messages yet';
+      document.getElementById('mode-text').textContent = isDark ? 
+        (isArabic ? 'الوضع المضيء' : 'Light Mode') : 
+        (isArabic ? 'الوضع المظلم' : 'Dark Mode');
+      
+      // Update emoji picker direction
       document.getElementById('emoji-picker').style.flexDirection = isArabic ? 'row-reverse' : 'row';
-      // Error/message resets
+      
+      // Clear errors
       document.getElementById('login-error').textContent = '';
       document.getElementById('msgs-error').textContent = '';
-      // Rerender messages to update direction if admin panel is open
-      if (isAdmin && document.getElementById('admin-panel').style.display === 'block') fetchMessages();
+      
+      // Rerender messages if admin panel is open
+      if (isAdmin && document.getElementById('admin-panel').classList.contains('active')) {
+        fetchMessages();
+      }
     }
-    // --- Light/Dark Mode Toggle ---
+    
+    // --- Dark/Light Mode Toggle ---
     function toggleMode() {
       isDark = !isDark;
       localStorage.setItem('isDark', isDark);
       document.body.classList.toggle('dark', isDark);
-      document.querySelector('.mode-toggle').textContent = isDark ? '☀️' : '🌙';
-      document.documentElement.style.setProperty('--modal-bg', isDark ? '#232526' : '#fff');
-      // Rerender messages to update card theme if admin panel is open
-      if (isAdmin && document.getElementById('admin-panel').style.display === 'block') fetchMessages();
+      
+      // Update mode toggle button
+      const modeIcon = document.getElementById('mode-icon');
+      const modeText = document.getElementById('mode-text');
+      if (isDark) {
+        modeIcon.textContent = '☀️';
+        modeText.textContent = isArabic ? 'الوضع المضيء' : 'Light Mode';
+      } else {
+        modeIcon.textContent = '🌙';
+        modeText.textContent = isArabic ? 'الوضع المظلم' : 'Dark Mode';
+      }
+      
+      // Rerender messages if admin panel is open
+      if (isAdmin && document.getElementById('admin-panel').classList.contains('active')) {
+        fetchMessages();
+      }
     }
+    
     // --- Emoji Picker ---
     function renderEmojis() {
       const picker = document.getElementById('emoji-picker');
       picker.innerHTML = '';
-      emojis.forEach(e => {
+      
+      emojis.forEach(emoji => {
         const btn = document.createElement('button');
-        btn.type = 'button';
         btn.className = 'emoji-btn';
-        btn.textContent = e;
+        btn.textContent = emoji;
         btn.onclick = () => {
-          const msg = document.getElementById('message');
-          const start = msg.selectionStart, end = msg.selectionEnd;
-          msg.value = msg.value.substring(0, start) + e + msg.value.substring(end);
-          msg.focus();
-          msg.selectionStart = msg.selectionEnd = start + e.length;
+          const textarea = document.getElementById('message');
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          
+          textarea.value = textarea.value.substring(0, start) + emoji + textarea.value.substring(end);
+          textarea.focus();
+          textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+          
+          // Trigger input event for auto-resize
+          const event = new Event('input', { bubbles: true });
+          textarea.dispatchEvent(event);
         };
+        
         picker.appendChild(btn);
       });
+      
       picker.style.flexDirection = isArabic ? 'row-reverse' : 'row';
     }
-    // --- Animated Background (floating hearts/petals) ---
-    function createPetal() {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      const shapes = [
-        '<svg width="32" height="32" viewBox="0 0 32 32"><path fill="#ffb3c6" d="M16 29s-13-8.35-13-17A7 7 0 0 1 16 7a7 7 0 0 1 13 5c0 8.65-13 17-13 17Z"/></svg>',
-        '<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffd3e0"/></svg>',
-        '<svg width="32" height="32" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="10" ry="14" fill="#ff7096"/></svg>',
-        '<svg width="32" height="32" viewBox="0 0 32 32"><path d="M16 29C16 29 3 20.65 3 12A7 7 0 0 1 16 5a7 7 0 0 1 13 7c0 8.65-13 17-13 17Z" fill="#ffd3e0"/></svg>'
-      ];
-      petal.innerHTML = shapes[Math.floor(Math.random()*shapes.length)];
-      petal.style.left = Math.random() * 98 + 'vw';
-      petal.style.top = '-40px';
-      petal.style.animationDuration = (8 + Math.random()*6) + 's';
-      petal.style.opacity = 0.5 + Math.random()*0.5;
-      petal.style.transform = `scale(${0.7 + Math.random()*0.7})`;
-      document.getElementById('bg-anim').appendChild(petal);
-      setTimeout(() => petal.remove(), 12000);
-    }
-    setInterval(createPetal, 1100);
-    // --- Responsive Emoji Picker on load ---
-    window.addEventListener('DOMContentLoaded', () => {
-      renderEmojis();
-      // Restore theme and language from localStorage
-      if (localStorage.getItem('isDark') === 'true') {
-        isDark = false; // force toggle to apply theme
-        toggleMode();
-      }
-      if (localStorage.getItem('isArabic') === 'false') {
-        isArabic = true; // force toggle to apply lang
-        toggleLang();
-      }
-    });
+    
     // --- Message Submission ---
     async function sendMessage() {
-      const message = document.getElementById('message').value;
-      if (!message.trim()) return alert(isArabic ? 'الرسالة فارغة!' : 'Message is empty!');
+      const message = document.getElementById('message').value.trim();
+      if (!message) {
+        showTemporaryAlert(isArabic ? 'الرسالة فارغة!' : 'Message is empty!');
+        return;
+      }
+      
       const btn = document.getElementById('submit-btn');
+      const originalText = btn.innerHTML;
+      
+      // Show loading state
       btn.disabled = true;
-      const oldTxt = btn.textContent;
-      btn.innerHTML = oldTxt + '<span class="loading-dots"><span></span><span></span><span></span></span>';
+      btn.innerHTML = `<span>${isArabic ? 'جاري الإرسال' : 'Sending'}</span>
+                      <span class="loading-dots"><span></span><span></span><span></span></span>`;
+      
       try {
-        const res = await fetch(API_BASE + '/api/message', {
+        const response = await fetch(`${API_BASE}/api/message`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ content: message })
         });
-        const data = await res.json();
-        if (res.ok && data.success) {
-          alert(isArabic ? 'تم إرسال الرسالة ❤' : 'Message sent ❤');
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          // Success
+          showTemporaryAlert(isArabic ? 'تم إرسال الرسالة بنجاح ❤' : 'Message sent successfully ❤');
           document.getElementById('message').value = '';
+          
+          // Reset textarea height
+          const textarea = document.getElementById('message');
+          textarea.style.height = 'auto';
         } else {
-          alert((data?.error || (isArabic ? 'حدث خطأ أثناء الإرسال' : 'Failed to send message')));
+          // Error
+          showTemporaryAlert(data?.error || (isArabic ? 'حدث خطأ أثناء الإرسال' : 'Failed to send message'));
         }
-      } catch (e) {
-        alert(isArabic ? 'تعذر الاتصال بالخادم' : 'Failed to connect to server');
+      } catch (error) {
+        // Network error
+        showTemporaryAlert(isArabic ? 'تعذر الاتصال بالخادم' : 'Failed to connect to server');
+      } finally {
+        // Reset button
+        btn.disabled = false;
+        btn.innerHTML = originalText;
       }
-      btn.disabled = false;
-      btn.innerHTML = oldTxt;
     }
-
-    // --- Admin Login Modal Logic ---
+    
+    // --- Temporary Alert ---
+    function showTemporaryAlert(message) {
+      const alert = document.createElement('div');
+      alert.textContent = message;
+      alert.style.position = 'fixed';
+      alert.style.bottom = '20px';
+      alert.style.left = '50%';
+      alert.style.transform = 'translateX(-50%)';
+      alert.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+      alert.style.color = 'white';
+      alert.style.padding = '12px 24px';
+      alert.style.borderRadius = '50px';
+      alert.style.zIndex = '1000';
+      alert.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+      alert.style.animation = 'fadeInUp 0.3s ease-out';
+      
+      document.body.appendChild(alert);
+      
+      setTimeout(() => {
+        alert.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => alert.remove(), 300);
+      }, 3000);
+    }
+    
+    // --- Admin Login Modal ---
     function showLoginModal() {
-      document.getElementById('login-modal').style.display = 'flex';
+      document.getElementById('login-modal').classList.add('active');
       document.getElementById('admin-password').value = '';
       document.getElementById('login-error').textContent = '';
       setTimeout(() => document.getElementById('admin-password').focus(), 100);
     }
+    
     function hideLoginModal() {
-      document.getElementById('login-modal').style.display = 'none';
-      document.getElementById('admin-password').value = '';
-      document.getElementById('login-error').textContent = '';
+      document.getElementById('login-modal').classList.remove('active');
     }
-    // --- Admin Login Fetch ---
+    
     async function adminLogin() {
-      const pwd = document.getElementById('admin-password').value;
-      if (!pwd) {
-        document.getElementById('login-error').textContent = isArabic ? 'يرجى إدخال كلمة المرور' : 'Please enter the password';
+      const password = document.getElementById('admin-password').value.trim();
+      if (!password) {
+        document.getElementById('login-error').textContent = isArabic ? 'يرجى إدخال كلمة المرور' : 'Please enter password';
         return;
       }
-      document.getElementById('login-btn').disabled = true;
-      document.getElementById('login-btn').innerHTML = (isArabic ? 'جاري الدخول' : 'Logging in') + '<span class="loading-dots"><span></span><span></span><span></span></span>';
+      
+      const btn = document.getElementById('login-btn');
+      const originalText = btn.innerHTML;
+      
+      // Show loading state
+      btn.disabled = true;
+      btn.innerHTML = `<span>${isArabic ? 'جاري الدخول' : 'Logging in'}</span>
+                      <span class="loading-dots"><span></span><span></span><span></span></span>`;
+      
       try {
-        const res = await fetch(API_BASE + '/api/login', {
+        const response = await fetch(`${API_BASE}/api/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: pwd })
+          body: JSON.stringify({ password })
         });
-        const data = await res.json();
-        if (res.ok && data.success) {
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          // Success
           isAdmin = true;
-          adminPassword = pwd;
+          adminPassword = password;
           hideLoginModal();
           showAdminPanel();
         } else {
-          document.getElementById('login-error').textContent = data?.error || (isArabic ? 'كلمة المرور غير صحيحة' : 'Incorrect password');
+          // Error
+          document.getElementById('login-error').textContent = 
+            data?.error || (isArabic ? 'كلمة المرور غير صحيحة' : 'Incorrect password');
         }
-      } catch (e) {
-        document.getElementById('login-error').textContent = isArabic ? 'خطأ في الاتصال بالخادم' : 'Server connection error';
+      } catch (error) {
+        // Network error
+        document.getElementById('login-error').textContent = 
+          isArabic ? 'تعذر الاتصال بالخادم' : 'Failed to connect to server';
+      } finally {
+        // Reset button
+        btn.disabled = false;
+        btn.innerHTML = originalText;
       }
-      document.getElementById('login-btn').disabled = false;
-      document.getElementById('login-btn').textContent = isArabic ? 'دخول' : 'Login';
     }
-    // --- Show Admin Panel & Fetch Messages ---
+    
+    // --- Admin Panel ---
     function showAdminPanel() {
-      document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('admin-panel').classList.add('active');
       document.getElementById('msgs-list').innerHTML = '';
       document.getElementById('msgs-error').textContent = '';
-      document.getElementById('msgs-loading').style.display = 'block';
+      document.getElementById('msgs-empty').style.display = 'none';
+      document.getElementById('msgs-loading').style.display = 'flex';
+      
       fetchMessages();
     }
+    
     function logoutAdmin() {
       isAdmin = false;
-      adminToken = '';
-      document.getElementById('admin-panel').style.display = 'none';
+      adminPassword = '';
+      document.getElementById('admin-panel').classList.remove('active');
     }
-    // --- Fetch Messages ---
+    
     async function fetchMessages() {
       try {
-        const res = await fetch(API_BASE + '/api/messages', {
+        const response = await fetch(`${API_BASE}/api/messages`, {
           headers: { password: adminPassword }
         });
-        const data = await res.json();
-        if (res.ok && Array.isArray(data)) {
+        
+        const data = await response.json();
+        
+        if (response.ok && Array.isArray(data)) {
           renderMessages(data);
         } else {
-          document.getElementById('msgs-error').textContent = data?.error || (isArabic ? 'تعذر جلب الرسائل' : 'Failed to fetch messages');
+          document.getElementById('msgs-error').textContent = 
+            data?.error || (isArabic ? 'تعذر جلب الرسائل' : 'Failed to fetch messages');
+          document.getElementById('msgs-empty').style.display = 'none';
         }
-      } catch (e) {
-        document.getElementById('msgs-error').textContent = isArabic ? 'خطأ في الاتصال بالخادم' : 'Server connection error';
+      } catch (error) {
+        document.getElementById('msgs-error').textContent = 
+          isArabic ? 'خطأ في الاتصال بالخادم' : 'Server connection error';
+        document.getElementById('msgs-empty').style.display = 'none';
+      } finally {
+        document.getElementById('msgs-loading').style.display = 'none';
       }
-      document.getElementById('msgs-loading').style.display = 'none';
     }
-    // --- Render Messages ---
-    function renderMessages(msgs) {
-      console.log('Rendering messages:', msgs);
-      const list = document.getElementById('msgs-list');
-      list.innerHTML = '';
-      if (!msgs.length) {
-        list.innerHTML = `<div style="color:#888;font-size:1.2rem;margin-top:2rem;">${isArabic ? 'لا توجد رسائل بعد' : 'No messages yet'}</div>`;
+    
+    function renderMessages(messages) {
+      const container = document.getElementById('msgs-list');
+      const emptyState = document.getElementById('msgs-empty');
+      
+      // Clear previous messages
+      container.innerHTML = '';
+      
+      if (!messages.length) {
+        emptyState.style.display = 'block';
         return;
       }
-      msgs.slice().reverse().forEach(msg => {
+      
+      // Show messages in reverse order (newest first)
+      messages.reverse().forEach(msg => {
         const card = document.createElement('div');
-        card.className = 'msg-card'; // add a class for easier theme switching
-        card.style = `background:${isDark ? '#232526' : '#fff8fa'};border-radius:1.2rem;box-shadow:0 2px 10px rgba(255,112,150,0.08);padding:1.1rem 1rem;margin-bottom:1.3rem;text-align:${isArabic?'right':'left'};animation:fadeInUp 0.7s cubic-bezier(.6,.1,.4,1);position:relative;`;
-        card.innerHTML = `<div style=\"font-size:1.15rem;white-space:pre-line;word-break:break-word;color:${isDark?'#f7f7fa':'#232526'};\">${escapeHTML(msg.content)}</div><div style=\"font-size:0.93rem;color:#ff7096;margin-top:0.7rem;\">${formatDate(msg.createdAt)}</div>`;
-        list.appendChild(card);
+        card.className = 'message-card';
+        
+        // Format date
+        const date = new Date(msg.createdAt);
+        const dateOptions = { 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        };
+        const formattedDate = date.toLocaleString(
+          isArabic ? 'ar-EG' : 'en-US', 
+          dateOptions
+        );
+        
+        // Create card content
+        card.innerHTML = `
+          <div class="message-content">${escapeHTML(msg.content)}</div>
+          <div class="message-date">${formattedDate}</div>
+        `;
+        
+        container.appendChild(card);
       });
     }
-    // --- Helpers ---
+    
+    // --- Helper Functions ---
     function escapeHTML(str) {
-      return (str||'').replace(/[&<>]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[t]));
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML.replace(/\n/g, '<br>');
     }
-    function formatDate(dateStr) {
-      if (!dateStr) return '';
-      const d = new Date(dateStr);
-      const opts = { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' };
-      return d.toLocaleString(isArabic ? 'ar-EG' : 'en-GB', opts);
-    }
+    
+    // --- Initialize on Load ---
+    document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
 </html>
