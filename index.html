@@ -1155,6 +1155,8 @@
         console.error(err);
         hideAdminPanel();
         localStorage.removeItem('adminPassword');
+      }finally{
+        document.getElementById('msgs-loading').style.display = 'none';
       }
     }
     
