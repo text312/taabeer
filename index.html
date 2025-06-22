@@ -263,8 +263,8 @@
   </div>
 
   <!-- Admin Login Modal -->
-  <div id="login-modal" style="display:none; position:fixed; top:0;left:0;width:100vw;height:100vh;z-index:10;justify-content:center;align-items:center;background:rgba(0,0,0,0.23);">
-    <div style="background:var(--modal-bg,#fff);border-radius:1.2rem;box-shadow:0 6px 32px rgba(0,0,0,0.12);padding:2rem 1.5rem;max-width:350px;width:90vw;text-align:center;position:relative;">
+  <div id="login-modal" style="display:none; position:fixed; top:0;left:0;width:100vw;height:100vh;z-index:10;justify-content:center;align-items:center;background:var(--overlay-bg);">
+    <div style="background:var(--modal-bg);border-radius:1.2rem;box-shadow:0 6px 32px rgba(0,0,0,0.12);padding:2rem 1.5rem;max-width:350px;width:90vw;text-align:center;position:relative;">
       <button onclick="hideLoginModal()" style="position:absolute;top:0.7rem;right:0.9rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#aaa;">✖</button>
       <h2 id="login-title" style="margin-bottom:1.3rem; color:#ff7096;">دخول المشرف</h2>
       <input id="admin-password" type="password" style="width:90%;padding:0.7rem 1rem;margin-bottom:1.1rem;border-radius:0.9rem;border:1.2px solid #ffd3e0;font-size:1rem;outline:none;font-family:inherit;background:#fff8fa;direction:ltr;" placeholder="كلمة المرور" />
@@ -276,8 +276,8 @@
   </div>
 
   <!-- Admin Messages Viewer -->
-  <div id="admin-panel" style="display:none; position:fixed; top:0;left:0;width:100vw;height:100vh;z-index:11;overflow:auto;background:rgba(255,255,255,0.98);">
-    <div style="max-width:540px;margin:2.5rem auto 2rem auto;padding:1.5rem 1rem 2rem 1rem;background:rgba(255,255,255,0.97);border-radius:2rem;box-shadow:0 8px 32px rgba(255,112,150,0.12);position:relative;">
+  <div id="admin-panel" style="display:none; position:fixed; top:0;left:0;width:100vw;height:100vh;z-index:11;overflow:auto;background:var(--overlay-bg);">
+    <div style="max-width:540px;margin:2.5rem auto 2rem auto;padding:1.5rem 1rem 2rem 1rem;background:var(--panel-bg);border-radius:2rem;box-shadow:0 8px 32px rgba(255,112,150,0.12);position:relative;">
       <button onclick="logoutAdmin()" style="position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#ff7096;font-weight:bold;">🚪 <span id="logout-txt">خروج</span></button>
       <h2 id="msgs-title" style="color:#ff7096;margin-bottom:1.3rem;">الرسائل المستلمة</h2>
       <div id="msgs-list"></div>
