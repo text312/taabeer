@@ -1139,10 +1139,10 @@
         }
         
         const markReadBtn = card.querySelector('.mark-read-btn');
-        markReadBtn.onclick = () => markAsRead(message.id, markReadBtn);
+        markReadBtn.onclick = () => markAsRead(message._id, markReadBtn);
         
         const deleteBtn = card.querySelector('.delete-msg-btn');
-        deleteBtn.onclick = () => deleteMessage(message.id, deleteBtn);
+        deleteBtn.onclick = () => deleteMessage(message._id, deleteBtn);
         
         list.appendChild(card);
       });

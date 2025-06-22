@@ -73,6 +73,9 @@ app.patch('/api/messages/:id/read', async (req, res, next) => {
     const match = password === process.env.ADMIN_PASSWORD;
     if (!match) return res.status(403).json({ error: 'Unauthorized' });
     const { id } = req.params;
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid or missing message id' });
+    }
     const msg = await Message.findByIdAndUpdate(id, { read: true }, { new: true });
     if (!msg) return res.status(404).json({ error: 'Message not found' });
     res.json({ success: true });
