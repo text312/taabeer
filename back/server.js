@@ -6,7 +6,11 @@ const mongoose = require('mongoose');
 
 const app = express();
 app.use(cors({
-  origin: ['https://text312.github.io'],
+  origin: 'https://text312.github.io',
+  credentials: true
+}));
+app.options('*', cors({
+  origin: 'https://text312.github.io',
   credentials: true
 }));
 app.use(express.json());

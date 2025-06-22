@@ -293,7 +293,7 @@
     let isArabic = true;
     let isDark = false;
     let isAdmin = false;
-    let adminToken = '';
+    let adminPassword = '';
     const API_BASE = 'https://taabeer.onrender.com';
     const emojis = ['😊','😢','❤️','🥰','😔','🌸','🌹','✨','🙏','😇','😞','😃','😭','😌','💖','😶','🤍','😅','😳','🥺','😡','😱','😴','😎','🤗','😍','😕','💔','💗','🤍','🌷'];
 
@@ -417,9 +417,9 @@
           body: JSON.stringify({ password: pwd })
         });
         const data = await res.json();
-        if (res.ok && data.token) {
-          adminToken = data.token;
+        if (res.ok && data.success) {
           isAdmin = true;
+          adminPassword = pwd;
           hideLoginModal();
           showAdminPanel();
         } else {
@@ -448,7 +448,7 @@
     async function fetchMessages() {
       try {
         const res = await fetch(API_BASE + '/api/messages', {
-          headers: { 'Authorization': 'Bearer ' + adminToken }
+          headers: { password: adminPassword }
         });
         const data = await res.json();
         if (res.ok && Array.isArray(data.messages)) {
