@@ -530,6 +530,26 @@
       justify-content: flex-end;
       margin-top: 1rem;
     }
+    .msg-status-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 0.2rem 0.7rem;
+      margin-right: 0.6rem;
+      margin-left: 0.2rem;
+      vertical-align: middle;
+    }
+    .read-badge {
+      background: rgba(37, 208, 171, 0.15);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .unread-badge {
+      background: rgba(255, 77, 79, 0.13);
+      color: #ff4d4f;
+      border: 1px solid #ff4d4f;
+    }
     .message-btn {
       padding: 0.4rem 1.1rem;
       border-radius: 8px;
@@ -1098,6 +1118,9 @@
         card.className = 'message-card';
         card.innerHTML = `
           <div class="message-header">
+            <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
+              ${message.read ? (isArabic ? '✓ تمت القراءة' : '✓ Read') : (isArabic ? 'غير مقروء' : 'Unread')}
+            </span>
             <span>${message.date}</span>
           </div>
           <div class="message-content">

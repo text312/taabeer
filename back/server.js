@@ -88,6 +88,9 @@ app.delete('/api/messages/:id', async (req, res, next) => {
     const match = password === process.env.ADMIN_PASSWORD;
     if (!match) return res.status(403).json({ error: 'Unauthorized' });
     const { id } = req.params;
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid or missing message id' });
+    }
     const msg = await Message.findByIdAndDelete(id);
     if (!msg) return res.status(404).json({ error: 'Message not found' });
     res.json({ success: true });
