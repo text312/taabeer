@@ -473,6 +473,7 @@
     }
     // --- Render Messages ---
     function renderMessages(msgs) {
+      console.log('Rendering messages:', msgs);
       const list = document.getElementById('msgs-list');
       list.innerHTML = '';
       if (!msgs.length) {
