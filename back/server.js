@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+
 
 const app = express();
 app.use(cors());
@@ -31,7 +31,7 @@ app.post('/api/message', async (req, res) => {
 // Login
 app.post('/api/login', async (req, res) => {
   const { password } = req.body;
-  const match = await bcrypt.compare(password, process.env.ADMIN_PASSWORD);
+  const match = password === process.env.ADMIN_PASSWORD;
   if (!match) return res.status(403).json({ error: 'Unauthorized' });
   res.json({ success: true });
 });
@@ -39,7 +39,7 @@ app.post('/api/login', async (req, res) => {
 // Get messages (after login)
 app.get('/api/messages', async (req, res) => {
   const { password } = req.headers;
-  const match = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH);
+  const match = password === process.env.ADMIN_PASSWORD;
   if (!match) return res.status(403).json({ error: 'Unauthorized' });
 
   const messages = await Message.find().sort({ createdAt: -1 });
