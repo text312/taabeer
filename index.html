@@ -461,8 +461,8 @@
           headers: { password: adminPassword }
         });
         const data = await res.json();
-        if (res.ok && Array.isArray(data.messages)) {
-          renderMessages(data.messages);
+        if (res.ok && Array.isArray(data)) {
+          renderMessages(data);
         } else {
           document.getElementById('msgs-error').textContent = data?.error || (isArabic ? 'تعذر جلب الرسائل' : 'Failed to fetch messages');
         }
@@ -482,7 +482,7 @@
       msgs.slice().reverse().forEach(msg => {
         const card = document.createElement('div');
         card.style = `background:${isDark ? '#232526' : '#fff8fa'};border-radius:1.2rem;box-shadow:0 2px 10px rgba(255,112,150,0.08);padding:1.1rem 1rem;margin-bottom:1.3rem;text-align:${isArabic?'right':'left'};animation:fadeInUp 0.7s cubic-bezier(.6,.1,.4,1);position:relative;`;
-        card.innerHTML = `<div style="font-size:1.15rem;white-space:pre-line;word-break:break-word;color:${isDark?'#f7f7fa':'#232526'};">${escapeHTML(msg.text)}</div><div style="font-size:0.93rem;color:#ff7096;margin-top:0.7rem;">${formatDate(msg.date)}</div>`;
+        card.innerHTML = `<div style="font-size:1.15rem;white-space:pre-line;word-break:break-word;color:${isDark?'#f7f7fa':'#232526'};">${escapeHTML(msg.content)}</div><div style="font-size:0.93rem;color:#ff7096;margin-top:0.7rem;">${formatDate(msg.createdAt)}</div>`;
         list.appendChild(card);
       });
     }
