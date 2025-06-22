@@ -243,7 +243,6 @@
       min-height: 180px;
       background: rgba(255, 255, 255, 0.85);
       color: var(--text);
-      margin-bottom: 1.5rem;
       transition: var(--transition);
       font-family: inherit;
       box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
@@ -320,7 +319,7 @@
     
     /* Submit Button */
     .submit-btn {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(90deg, #ff4d78, #7f5af0);
       color: white;
       border: none;
       border-radius: 50px;
@@ -335,10 +334,18 @@
       margin-top: 0.8rem;
       width: 100%;
       max-width: 240px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .submit-btn > * {
+      vertical-align: middle;
+      display: inline-block;
+    }
+    .submit-btn .fas {
+      margin-left: 0.6rem;
+      margin-right: 0.2rem;
     }
     .submit-btn:hover {
       transform: translateY(-3px);
@@ -477,22 +484,64 @@
     }
     #toggle-password {
       position: absolute;
-      left: 0.7rem;
-      top: 50%;
-      transform: translateY(-50%);
+      left: 0;
+      top: 0;
+      width: 2.5rem;
+      height: 100%;
+      min-height: 0;
       background: none;
       border: none;
       cursor: pointer;
       font-size: 1.2rem;
       color: #888;
       outline: none;
+      padding: 0;
+      z-index: 2;
+      transition: color 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .modal-input-wrapper {
+      position: relative;
+      width: 100%;
+      display: block;
+    }
+    .modal-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: 2.5rem;
+      padding-right: 0.75rem;
+      /* Default: icon on left for RTL */
+    }
+    html[dir="ltr"] .modal-input {
+      padding-right: 2.5rem;
+      padding-left: 0.75rem;
+    }
+    #toggle-password {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2.5rem;
       height: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #888;
+      outline: none;
       padding: 0;
       z-index: 2;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    html[dir="ltr"] #toggle-password {
+      left: auto;
+      right: 0;
+    }
+
     #toggle-password:active {
       color: var(--primary);
     }
@@ -1180,31 +1229,33 @@
       
       const btn = document.getElementById('submit-btn');
       const originalText = btn.innerHTML;
-      
+
+      // Get selected mood
+      const moodOption = document.querySelector('.mood-option.active');
+      const selectedMood = moodOption ? moodOption.getAttribute('data-mood') : null;
+      if (!selectedMood) {
+        showTemporaryAlert(isArabic ? 'يرجى اختيار الحالة المزاجية!' : 'Please select a mood!');
+        return;
+      }
+
       // Show loading state
       btn.disabled = true;
-      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>
-                      <span>${isArabic ? 'جاري الإرسال' : 'Sending'}</span>`;
-      
+      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>\n                      <span>${isArabic ? 'جاري الإرسال' : 'Sending'}</span>`;
+
       try {
         const response = await fetch(`${API_BASE}/api/message`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: message })
+          body: JSON.stringify({ content: message, mood: selectedMood })
         });
-        
         const data = await response.json();
-        
         if (response.ok && data.success) {
-          // Success - create celebration effect
           createCelebration();
           showTemporaryAlert(isArabic ? 'تم إرسال الرسالة بنجاح ❤' : 'Message sent successfully ❤');
           document.getElementById('message').value = '';
-          
           // Reset textarea height
           const textarea = document.getElementById('message');
           textarea.style.height = 'auto';
-          
           // Hide couple animation
           document.getElementById('couple-animation').classList.remove('active');
         } else {
