@@ -316,12 +316,14 @@
   height: 2.3rem;
   border-radius: 50%;
   background: linear-gradient(135deg, #ff4d78 60%, #7f5af0 100%);
-  color: #fff;
+  color: #0f0f0f;
   font-size: 1.5rem;
   margin-inline-start: 0.7rem;
   box-shadow: 0 0 0 4px rgba(255,112,150,0.18), 0 6px 16px rgba(127,90,240,0.18);
   transition: box-shadow 0.2s, border-color 0.2s;
   cursor: pointer;
+  box-shadow: 0 0 0 6px rgba(255,112,150,0.25), 0 8px 24px rgba(127,90,240,0.22);
+  filter: brightness(1.08) saturate(1.2);
 }
 body.dark .msg-mood-badge {
   --mood-badge-border: #000;
@@ -331,10 +333,7 @@ body:not(.dark) .msg-mood-badge {
   --mood-badge-border: #fff;
   border-color: #fff;
 }
-.msg-mood-badge:hover {
-  box-shadow: 0 0 0 6px rgba(255,112,150,0.25), 0 8px 24px rgba(127,90,240,0.22);
-  filter: brightness(1.08) saturate(1.2);
-}
+
 .msg-mood-badge i {
   font-size: 1.3em;
   filter: drop-shadow(0 2px 6px rgba(127,90,240,0.14));
