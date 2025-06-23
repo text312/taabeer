@@ -1757,13 +1757,13 @@ body:not(.dark) .msg-mood-badge {
         card.className = 'message-card';
         // Get mood icon info
         let mood = moods.find(m => m.id === message.mood);
-        let moodIcon = mood ? `<i class="fas ${mood.icon} mood-option" title="${isArabic ? mood.ar : mood.en}"></i>` : '';
+        let moodIcon = mood ? `<i class="fas ${mood.icon} mood-icon" title="${isArabic ? mood.ar : mood.en}"></i>` : '';
         card.innerHTML = `
           <div class="message-header" style="display: flex; align-items: center; justify-content: space-between;">
         <span class="msg-status-badge ${message.read ? 'read-badge' : 'unread-badge'}">
           ${message.read ? (isArabic ? '✓ تمت القراءة' : '✓ Read') : (isArabic ? 'غير مقروء' : 'Unread')}
         </span>
-        ${moodIcon ? `<span class="msg-mood-badge" title="${isArabic ? mood.ar : mood.en}"><i class="fas ${mood.icon}"></i></span>` : ''}
+        ${moodIcon ? `<span class="msg-mood-badge" title="${isArabic ? mood.ar : mood.en}"><i class="fas ${mood.icon} mood-icon"></i></span>` : ''}
         <span>${formatDate(message.createdAt)}</span>
       </div>
       <div class="message-content">
